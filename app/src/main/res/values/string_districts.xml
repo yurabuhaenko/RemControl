@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="district1">Голосіївський</string>
+    <string name="district2">Дарницький</string>
+    <string name="district3">Деснянський</string>
+    <string name="district4">Дніпровський</string>
+    <string name="district5">Оболонський</string>
+    <string name="district6">Печерський</string>
+    <string name="district7">Подільський</string>
+    <string name="district8">Святошинський</string>
+    <string name="district9">Солом`янський</string>
+    <string name="district10">Шевченківський</string>
+
+
+
+</resources>

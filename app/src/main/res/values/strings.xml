@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Rem Control</string>
+
+
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+
+
+
+
+
+    <string name="create_appeal">Створити звернення</string>
+    <string name="postponed">Відкладені</string>
+    <string name="history">Історія звернень</string>
+
+    <string name="about_project">Про проект</string>
+    <string name="settings">Налаштування</string>
+    <string name="help">Допомога</string>
+
+    <string name="login">Увійти</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="sign_in">Увійти</string>
+    <string name="sign_out">Вийти</string>
+    <string name="sign_up">Реєстрація</string>
+
+    <string name="prompt_email">Електронна пошта</string>
+    <string name="prompt_password">Пароль</string>
+
+
+    <string name="error_invalid_email">Некоректна електронна пошта</string>
+    <string name="error_invalid_password">Пароль має бути більше 4х символів</string>
+    <string name="error_incorrect_password">Неправильний пароль</string>
+    <string name="error_field_required">Поле обов\'язкве до заповнення</string>
+
+
+    <string name="no_internet_connection_error">Відсутнє з\'єднання з інтернетом!</string>
+
+    <string name="need_authorization_error">Будь ласка, авторизуйтесь!</string>
+    <string name="title_activity_appeal_sent_history">AppealSentHistoryActivity</string>
+    <string name="title_activity_show_sent_appeal">ShowSentAppealActivity</string>
+
+    <string name="district">Район:</string>
+    <string name="address">Адреса:</string>
+    <string name="status">Статус:</string>
+    <string name="text">Ваш коментар:</string>
+    <string name="title_activity_postponed_appeals_list">PostponedAppealsListActivity</string>
+
+</resources>
