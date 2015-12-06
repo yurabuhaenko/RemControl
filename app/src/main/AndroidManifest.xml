@@ -12,7 +12,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name="system.RemControlApplication"
@@ -49,6 +49,11 @@
             android:name=".activitys.PostponedAppealsListActivity"
             android:label="@string/title_activity_postponed_appeals_list" >
         </activity>
+
+        <service
+            android:name="services.AuthorizationIntentService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
