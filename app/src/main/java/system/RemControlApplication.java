@@ -25,6 +25,8 @@ public class RemControlApplication extends Application {
     public  String cookie;
 
 
+    private ArrayList<PostponedAppeal> postponedAppeals;
+
 
     @Override
     public void onCreate() {
@@ -35,7 +37,9 @@ public class RemControlApplication extends Application {
         }
 
         cookie = null;
-
+        //deleteAllPostponedAppeals();
+        postponedAppeals = new ArrayList<PostponedAppeal>();
+        loadSavedAppeals();
     }
 
     public void setAppealSents(ArrayList<Appeal> appealSents){
@@ -48,6 +52,16 @@ public class RemControlApplication extends Application {
     }
     public User getUser(){return user;}
     public void deleteUser(){user = null;}
+
+
+    public ArrayList<PostponedAppeal> getPostponedAppeals() {
+        return postponedAppeals;
+    }
+
+
+    public void setPostponedAppeals(ArrayList<PostponedAppeal> postponedAppeals) {
+        this.postponedAppeals = postponedAppeals;
+    }
 
 
 
@@ -105,6 +119,9 @@ public class RemControlApplication extends Application {
     ///////////saving postponded////////////////
     ////////////////////////////////////////////
 
+
+
+
     private static final String PREFERENCES_POSTPONDED_APPEALS  = "postpondPref";
     private static final String NUMBER_OF_SAVED_APPEALS = "numberOfSavedAppeals";
     private static final String SAVED_TEXT = "appealText";
@@ -119,9 +136,12 @@ public class RemControlApplication extends Application {
 
 
 
-    public ArrayList<PostponedAppeal> getSavedAppeals(){
+
+    private void loadSavedAppeals(){
         sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
+
         int numbOfSaved = sPref.getInt(NUMBER_OF_SAVED_APPEALS, 0);
+
         ArrayList<PostponedAppeal> listAppeals = new ArrayList<PostponedAppeal>();
 
         for(int i = 0; i < numbOfSaved; ++i){
@@ -134,37 +154,48 @@ public class RemControlApplication extends Application {
             String photo3 = sPref.getString(SAVED_PHOTO3 + Integer.toString(i), "");
             String photo4 = sPref.getString(SAVED_PHOTO4 + Integer.toString(i), "");
             String photo5 = sPref.getString(SAVED_PHOTO5 + Integer.toString(i), "");
-            listAppeals.add(new PostponedAppeal(text, lang, lon, datetime, photo1, photo2, photo3, photo4, photo5));
+            postponedAppeals.add(new PostponedAppeal(text, lang, lon, datetime, photo1, photo2, photo3, photo4, photo5));
         }
-
-
-        return listAppeals;
     }
 
 
-    public void addAppealToSaved(PostponedAppeal appeal){
+    public void savePostponedAppeals(){
         sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
-        int numbOfSaved = sPref.getInt(NUMBER_OF_SAVED_APPEALS, 0);
-
         SharedPreferences.Editor ed = sPref.edit();
+        ed.clear();
+        ed.commit();
 
-        ed.putString(SAVED_TEXT + Integer.toString(numbOfSaved), appeal.getText());
-        ed.putString(SAVED_LONGITUDE + Integer.toString(numbOfSaved),appeal.getLon());
-        ed.putString(SAVED_LATITUDE + Integer.toString(numbOfSaved), appeal.getLat());
-        ed.putString(SAVED_DATETIME + Integer.toString(numbOfSaved), appeal.getDatetime());
-        ed.putString(SAVED_PHOTO1 + Integer.toString(numbOfSaved), appeal.getPhoto1());
-        ed.putString(SAVED_PHOTO2 + Integer.toString(numbOfSaved), appeal.getPhoto2());
-        ed.putString(SAVED_PHOTO3 + Integer.toString(numbOfSaved), appeal.getPhoto3());
-        ed.putString(SAVED_PHOTO4 + Integer.toString(numbOfSaved), appeal.getPhoto4());
-        ed.putString(SAVED_PHOTO5 + Integer.toString(numbOfSaved), appeal.getPhoto5());
+        ed = sPref.edit();
+        ed.putInt(NUMBER_OF_SAVED_APPEALS, postponedAppeals.size());
 
-        ed.putInt(NUMBER_OF_SAVED_APPEALS, numbOfSaved+1);
+        for(int i = 0; i < postponedAppeals.size(); ++i) {
+            ed.putString(SAVED_TEXT + Integer.toString(i), postponedAppeals.get(i).getText());
+            ed.putString(SAVED_LONGITUDE + Integer.toString(i), postponedAppeals.get(i).getLon());
+            ed.putString(SAVED_LATITUDE + Integer.toString(i), postponedAppeals.get(i).getLat());
+            ed.putString(SAVED_DATETIME + Integer.toString(i), postponedAppeals.get(i).getDatetime());
+            ed.putString(SAVED_PHOTO1 + Integer.toString(i), postponedAppeals.get(i).getPhoto1());
+            ed.putString(SAVED_PHOTO2 + Integer.toString(i), postponedAppeals.get(i).getPhoto2());
+            ed.putString(SAVED_PHOTO3 + Integer.toString(i), postponedAppeals.get(i).getPhoto3());
+            ed.putString(SAVED_PHOTO4 + Integer.toString(i), postponedAppeals.get(i).getPhoto4());
+            ed.putString(SAVED_PHOTO5 + Integer.toString(i), postponedAppeals.get(i).getPhoto5());
+        }
         ed.commit();
 
 
     }
 
+    public void deleteAllPostponedAppeals(){
+        sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.clear();
+        ed.commit();
+    }
 
+
+
+
+
+/*
     public void deleteAllSavedAppeals(){
         sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
         int numbOfSaved = sPref.getInt(NUMBER_OF_SAVED_APPEALS, 0);
@@ -232,6 +263,6 @@ public class RemControlApplication extends Application {
     }
 
 
-
+*/
 
 }
