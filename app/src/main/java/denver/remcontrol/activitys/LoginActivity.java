@@ -26,7 +26,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import container.ContainerSignInResponse;
+import container.User;
 import denver.remcontrol.R;
+import system.ActionHttp;
 import system.InternetConnectionChecker;
 
 public class LoginActivity extends NavigationDrawerActivity  {
@@ -70,6 +73,7 @@ public class LoginActivity extends NavigationDrawerActivity  {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        getSupportActionBar().setTitle("Увійти в систему");
     }
 
     public void onClickButtonSignIn(View view) {
@@ -190,6 +194,8 @@ public class LoginActivity extends NavigationDrawerActivity  {
         private String mError;
         private String name;
 
+        ContainerSignInResponse signInResponse;
+
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -199,9 +205,28 @@ public class LoginActivity extends NavigationDrawerActivity  {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            ActionHttp sh = new  ActionHttp();
 
+            // Making a request to url and getting response
 
+            signInResponse = sh.authorizationRequest(mEmail,mPassword, LoginActivity.this);
 
+            if(signInResponse.isError){
+                if( signInResponse.code.equals("AUTH_ERROR") ){
+                    mError = signInResponse.message;
+                }else {
+                    mError = "error!!"; ///DATA_ERROR   -- wrong mail
+                }
+
+            }else{
+                signInResponse.user.setPassword(mPassword);
+                remControlApplication.setUser(signInResponse.user);
+                remControlApplication.saveUser();
+                remControlApplication.setAppealSents(signInResponse.appealList);
+                return true;
+            }
+
+              ////geluxilo@inboxdesign.me
                 /////////get error
             return false;
         }

@@ -72,8 +72,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        setHeaderUser();
-        setMenuForUser();
+        //setHeaderUser();
+        //setMenuForUser();
 
 
         if (navigationView != null) {
@@ -92,6 +92,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         setMenuForUser();
         setHeaderUser();
     }
@@ -99,23 +100,22 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
 
     public void setHeaderUser(){
-        textViewUserName.setText("Лукьяненко Геннадий");
-        textViewUserEmail.setText("geluxilo@inboxdesign.me");
-        /*if (remControlApplication.checkIsSavedUser() == true){
+
+        if (remControlApplication.checkIsSavedUser()){
             textViewUserName.setText(remControlApplication.getUser().getName());
             textViewUserEmail.setText(remControlApplication.getUser().getEmail());
         }
         else{
             textViewUserName.setText(R.string.need_authorization_error);
             textViewUserEmail.setText("");
-        }*/
+        }
     }
 
 
 
 
     public void setMenuForUser(){
-        if(remControlApplication.checkIsSavedUser() == false){
+        if(remControlApplication.checkIsSavedUser()){
             navigationView.getMenu().setGroupVisible(R.id.group_base_functional_menu, true);
             navigationView.getMenu().setGroupVisible(R.id.group_login, false);
             navigationView.getMenu().setGroupVisible(R.id.group_app_menu, true);
@@ -162,6 +162,32 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
 
+    public void onClickSignOut(){
+        AlertDialog.Builder ad;
+        Context context;
+        context = NavigationDrawerActivity.this;
+        ad = new AlertDialog.Builder(context);
+        ad.setTitle("Sign Out");
+        ad.setMessage("You want to sign out?");
+        ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                remControlApplication.deleteUserFromSaved();
+                remControlApplication.deleteUser();
+                setMenuForUser();
+                setHeaderUser();
+            }
+        });
+        ad.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                return;
+            }
+        });
+
+        ad.setCancelable(true);
+        ad.show();
+    }
+
+
     private void setupNavigationDrawerContent(final NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -179,10 +205,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
                             case R.id.item_navigation_drawer_postponed:
 
+                                intent = new Intent(NavigationDrawerActivity.this, PostponedAppealsListActivity.class);
                                 drawerLayout.closeDrawer(GravityCompat.START);
-
+                                startActivity(intent);
 
                                 return true;
+
                             case R.id.item_navigation_drawer_history:
                                 intent = new Intent(NavigationDrawerActivity.this, AppealSentHistoryActivity.class);
                                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -193,23 +221,18 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                             case R.id.item_navigation_drawer_settings:
 
                                 drawerLayout.closeDrawer(GravityCompat.START);
-
+                                onClickSignOut();
 
                                 return true;
 
                             case R.id.item_navigation_drawer_about_project:
-
+                                intent = new Intent(NavigationDrawerActivity.this, AboutProject.class);
                                 drawerLayout.closeDrawer(GravityCompat.START);
-
+                                startActivity(intent);
 
                                 return true;
 
-                            case R.id.item_navigation_drawer_help:
 
-                                drawerLayout.closeDrawer(GravityCompat.START);
-
-
-                                return true;
 
                             case R.id.item_navigation_drawer_login:
                                 intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);

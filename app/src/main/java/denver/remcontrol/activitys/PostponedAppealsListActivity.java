@@ -9,21 +9,29 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import container.PostponedAppeal;
@@ -47,6 +55,9 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
 
     private LinearLayout myList;
 
+    FloatingActionButton newAppeal;
+    FloatingActionButton sentAllPostponedAppeals;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +74,17 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
 
        // setAppealListOnView();
 
+
+        newAppeal = (FloatingActionButton)findViewById(R.id.myFABCreateNewAppeal);
+        sentAllPostponedAppeals = (FloatingActionButton)findViewById(R.id.myFABSentAllPostponedAppeals);
+
+
+
         mListViewPosponedAppeals = findViewById(R.id.scrollViewPostponedAppeals);
 
 ////////////////////
         myList = (LinearLayout) findViewById(R.id.listViewPostponedAppeals);
+        getSupportActionBar().setTitle("Відкладені звернення");
     }
 
 
@@ -74,9 +92,44 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        revisibleButtons();
         setAppealListOnView();
     }
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+        remControlApplication.setPostponedAppeals(listPosponedAppeals);
+        remControlApplication.savePostponedAppeals();
+    }
+
+
+    private void revisibleButtons(){
+        if(listPosponedAppeals.size() > 0){
+            sentAllPostponedAppeals.setVisibility(View.VISIBLE);
+            newAppeal.setVisibility(View.INVISIBLE);
+        }else {
+            newAppeal.setVisibility(View.VISIBLE);
+            sentAllPostponedAppeals.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    public void onClickNewAppeal(View view){
+        Intent newIntent = new Intent(PostponedAppealsListActivity.this, AppealActivity.class);
+        newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(newIntent);
+    }
+
+    public void onClickSentAllAppeals(View view){
+        if(InternetConnectionChecker.isNetworkConnected(PostponedAppealsListActivity.this)){
+            SentAppeal sentAppeal = new SentAppeal(listPosponedAppeals, PostponedAppealsListActivity.this);
+            sentAppeal.execute();
+        }else{
+            Toast.makeText(PostponedAppealsListActivity.this, "Помилка! \n Неможливо визначити координати", Toast.LENGTH_LONG).show();
+        }
+    }
 
 
 
@@ -127,15 +180,27 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            PostponedAppeal appeal = listPosponedAppeals.get(position);
+            final PostponedAppeal appeal = listPosponedAppeals.get(position);
 
-            final TextView textText;
+            final EditText textText;
             final TextView textDateTime;
             ImageView mImageView1;
             ImageView mImageView2;
             ImageView mImageView3;
             ImageView mImageView4;
             ImageView mImageView5;
+            final RelativeLayout mRelLay1;
+            final RelativeLayout mRelLay2;
+            final RelativeLayout mRelLay3;
+            final RelativeLayout mRelLay4;
+            final RelativeLayout mRelLay5;
+            FloatingActionButton fab1;
+            FloatingActionButton fab2;
+            FloatingActionButton fab3;
+            FloatingActionButton fab4;
+            FloatingActionButton fab5;
+
+
             Button sentAppealButton;
 
 
@@ -143,13 +208,26 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
                 Log.d("debugGetView","Pos: "+ Integer.toString(position) +"  text  "+ appeal.getText() +"  convView null");
                 convertView = mInflater.inflate(R.layout.item_postponed_appeal, null);
 
-                textText = (TextView) convertView.findViewById(R.id.textOfAppeal);
+                textText = (EditText) convertView.findViewById(R.id.textOfAppeal);
                 textDateTime = (TextView) convertView.findViewById(R.id.textDateTimeOfSave);
                 mImageView1 = (ImageView)convertView.findViewById(R.id.imageViewPhotoSaved1);
                 mImageView2 = (ImageView)convertView.findViewById(R.id.imageViewPhotoSaved2);
                 mImageView3 = (ImageView)convertView.findViewById(R.id.imageViewPhotoSaved3);
                 mImageView4 = (ImageView)convertView.findViewById(R.id.imageViewPhotoSaved4);
                 mImageView5 = (ImageView)convertView.findViewById(R.id.imageViewPhotoSaved5);
+                mRelLay1 = (RelativeLayout)convertView.findViewById(R.id.photoAppealLayout1);
+                mRelLay2 = (RelativeLayout)convertView.findViewById(R.id.photoAppealLayout2);
+                mRelLay3 = (RelativeLayout)convertView.findViewById(R.id.photoAppealLayout3);
+                mRelLay4 = (RelativeLayout)convertView.findViewById(R.id.photoAppealLayout4);
+                mRelLay5 = (RelativeLayout)convertView.findViewById(R.id.photoAppealLayout5);
+                fab1 = (FloatingActionButton)convertView.findViewById(R.id.myFABImageViewPostponedPhoto1);
+                fab2 = (FloatingActionButton)convertView.findViewById(R.id.myFABImageViewPostponedPhoto2);
+                fab3 = (FloatingActionButton)convertView.findViewById(R.id.myFABImageViewPostponedPhoto3);
+                fab4 = (FloatingActionButton)convertView.findViewById(R.id.myFABImageViewPostponedPhoto4);
+                fab5 = (FloatingActionButton)convertView.findViewById(R.id.myFABImageViewPostponedPhoto5);
+
+
+
                 sentAppealButton = (Button)convertView.findViewById(R.id.onClickSentPostponedAppeal);
 
                 convertView.setTag(textDateTime);
@@ -157,11 +235,60 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
                 textText.setText(appeal.getText());
                 textDateTime.setText(appeal.getDatetime());
 
-                if(appeal.getPhoto1()!="")setPic(mImageView1, appeal.getPhoto1());
-                if(appeal.getPhoto2()!="")setPic(mImageView2, appeal.getPhoto2());
-                if(appeal.getPhoto3()!="")setPic(mImageView3, appeal.getPhoto3());
-                if(appeal.getPhoto4()!="")setPic(mImageView4, appeal.getPhoto4());
-                if(appeal.getPhoto5()!="")setPic(mImageView5, appeal.getPhoto5());
+
+                final HorizontalScrollView sr = (HorizontalScrollView) convertView.findViewById(R.id.horizontalScrollViewPhotos);
+                LinearLayout linLay = (LinearLayout) convertView.findViewById(R.id.xml_full_img_linear_below_view);
+
+                if(appeal.getPhoto1()!="" && appeal.getPhoto1()!=null){
+                    sr.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    sr.setVisibility(View.VISIBLE);
+                    linLay.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    setPic(mImageView1, mRelLay1, appeal.getPhoto1());
+                }
+                if(appeal.getPhoto2()!="" && appeal.getPhoto2()!=null){
+                    sr.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    sr.setVisibility(View.VISIBLE);
+                    linLay.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    setPic(mImageView2, mRelLay2 ,appeal.getPhoto2());
+                }
+                if(appeal.getPhoto3()!="" && appeal.getPhoto3()!=null){
+                    sr.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    sr.setVisibility(View.VISIBLE);
+                    linLay.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    setPic(mImageView3, mRelLay3 ,appeal.getPhoto3());
+                }
+                if(appeal.getPhoto4()!="" && appeal.getPhoto4()!=null){
+                    sr.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    sr.setVisibility(View.VISIBLE);
+                    linLay.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    setPic(mImageView4, mRelLay4 ,appeal.getPhoto4());
+                }
+                if(appeal.getPhoto5()!="" && appeal.getPhoto5()!=null){
+                    sr.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    sr.setVisibility(View.VISIBLE);
+                    linLay.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+                    setPic(mImageView5, mRelLay5 ,appeal.getPhoto5());
+                }
+
+                textText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        // TODO Auto-generated method stub
+                        appeal.setText(textText.getText().toString());
+                        listPosponedAppeals.get(position).setText(textText.getText().toString());
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // TODO Auto-generated method stub
+
+                    }});
+
 
                 sentAppealButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -174,6 +301,122 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
                         }
                     }
                 });
+
+
+                fab1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String dir = getFilesDir().getAbsolutePath();
+                        File f0 = new File(dir, appeal.getPhotoByNumber(1));
+                        boolean d0 = f0.delete();
+                        if (d0){Log.d("fileDeleting", "true");}else{Log.d("fileDeleting", "false");}
+                        appeal.addPhotoByNumber(1, "");
+                        listPosponedAppeals.get(position).addPhotoByNumber(1, "");
+                        remControlApplication.setPostponedAppeals(listPosponedAppeals);
+                        remControlApplication.savePostponedAppeals();
+                        if(!appeal.isPhotos()){
+                            sr.setVisibility(View.GONE);
+                            sr.getLayoutParams().width = 0;
+                            sr.getLayoutParams().height = 0;
+                        }
+                        mRelLay1.setVisibility(View.GONE);
+                        mRelLay1.getLayoutParams().width = 0;
+                        mRelLay1.getLayoutParams().height = 0;
+
+                    }
+                });
+
+                fab2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String dir = getFilesDir().getAbsolutePath();
+                        File f0 = new File(dir, appeal.getPhotoByNumber(2));
+                        boolean d0 = f0.delete();
+
+                        appeal.addPhotoByNumber(2, "");
+                        listPosponedAppeals.get(position).addPhotoByNumber(2, "");
+                        remControlApplication.setPostponedAppeals(listPosponedAppeals);
+                        remControlApplication.savePostponedAppeals();
+                        if(!appeal.isPhotos()){
+                            sr.setVisibility(View.GONE);
+                            sr.getLayoutParams().width = 0;
+                            sr.getLayoutParams().height = 0;
+                        }
+                        mRelLay2.setVisibility(View.GONE);
+                        mRelLay2.getLayoutParams().width = 0;
+                        mRelLay2.getLayoutParams().height = 0;
+
+                    }
+                });
+
+                fab3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String dir = getFilesDir().getAbsolutePath();
+                        File f0 = new File(dir, appeal.getPhotoByNumber(3));
+                        boolean d0 = f0.delete();
+                        appeal.addPhotoByNumber(3, "");
+                        listPosponedAppeals.get(position).addPhotoByNumber(3, "");
+                        remControlApplication.setPostponedAppeals(listPosponedAppeals);
+                        remControlApplication.savePostponedAppeals();
+                        if(!appeal.isPhotos()){
+                            sr.setVisibility(View.GONE);
+                            sr.getLayoutParams().width = 0;
+                            sr.getLayoutParams().height = 0;
+                        }
+                        mRelLay3.setVisibility(View.GONE);
+                        mRelLay3.getLayoutParams().width = 0;
+                        mRelLay3.getLayoutParams().height = 0;
+
+                    }
+                });
+
+                fab4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String dir = getFilesDir().getAbsolutePath();
+                        File f0 = new File(dir, appeal.getPhotoByNumber(4));
+                        boolean d0 = f0.delete();
+                        appeal.addPhotoByNumber(4, "");
+                        listPosponedAppeals.get(position).addPhotoByNumber(4, "");
+                        remControlApplication.setPostponedAppeals(listPosponedAppeals);
+                        remControlApplication.savePostponedAppeals();
+                        if(!appeal.isPhotos()){
+                            sr.setVisibility(View.GONE);
+                            sr.getLayoutParams().width = 0;
+                            sr.getLayoutParams().height = 0;
+                        }
+                        mRelLay4.setVisibility(View.GONE);
+                        mRelLay4.getLayoutParams().width = 0;
+                        mRelLay4.getLayoutParams().height = 0;
+
+                    }
+                });
+
+                fab5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String dir = getFilesDir().getAbsolutePath();
+                        File f0 = new File(dir, appeal.getPhotoByNumber(5));
+                        boolean d0 = f0.delete();
+
+                        appeal.addPhotoByNumber(5, "");
+                        listPosponedAppeals.get(position).addPhotoByNumber(5, "");
+                        remControlApplication.setPostponedAppeals(listPosponedAppeals);
+                        remControlApplication.savePostponedAppeals();
+                        if(!appeal.isPhotos()){
+                            sr.setVisibility(View.GONE);
+                            sr.getLayoutParams().width = 0;
+                            sr.getLayoutParams().height = 0;
+                        }
+                        mRelLay5.setVisibility(View.GONE);
+                        mRelLay5.getLayoutParams().width = 0;
+                        mRelLay5.getLayoutParams().height = 0;
+
+                    }
+                });
+
+
             }else{
                 Log.d("debugGetView","Pos:  "+ Integer.toString(position) + "   convView existing****");
             }
@@ -183,8 +426,10 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
 
 
 
-        private void setPic(final ImageView mImageView, final String mCurrentPhotoPath) {
-
+        private void setPic(final ImageView mImageView, RelativeLayout relLay, final String mCurrentPhotoPath) {
+            relLay.setVisibility(View.VISIBLE);
+            relLay.getLayoutParams().width = (int) getResources().getDimension(R.dimen.imageview_width);
+            relLay.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
             mImageView.getLayoutParams().width = (int) getResources().getDimension(R.dimen.imageview_width);
             mImageView.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
             int targetW = mImageView.getLayoutParams().width;
@@ -258,14 +503,19 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     private class SentAppeal extends AsyncTask<Void, Void, Boolean> {
 
         int houseId = -1;
-        final PostponedAppeal appeal;
+       // final PostponedAppeal appeal;
         final Context cont;
-        final int appealIndex;
+        int appealIndex = -1;
+        ArrayList<PostponedAppeal> appeals;
 
-
+        SentAppeal(ArrayList<PostponedAppeal> appeals,  Context cont) {
+            this.appeals = appeals;
+            this.cont = cont;
+        }
 
         SentAppeal(PostponedAppeal appeal, int appealIndex, Context cont) {
-            this.appeal = appeal;
+            appeals = new ArrayList<PostponedAppeal>();
+            appeals.add(appeal);
             this.cont = cont;
             this.appealIndex = appealIndex;
         }
@@ -279,15 +529,17 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            houseId  = ActionHttp.getNearestAddressesByCoordinates(appeal.getLat(), appeal.getLon(),
-                    cont);
+            for (int i = 0; i < appeals.size(); ++i) {
+                houseId = ActionHttp.getNearestAddressesByCoordinates(appeals.get(i).getLat(), appeals.get(i).getLon(),
+                        cont);
 
-            if (houseId  == -1 &&  houseId == 0) {
-                return false;
-            }else{
-                return ActionHttp.newAppealSent(houseId, appeal.getLat(), appeal.getLon(), appeal.getText(), cont);
+                if (houseId == -1 && houseId == 0) {
+                    return false;
+                } else {
+                     ActionHttp.newAppealSent(houseId, appeals.get(i).getLat(), appeals.get(i).getLon(), appeals.get(i).getText(), cont);
+                }
             }
-
+            return true;
         }
 
 
@@ -297,9 +549,16 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
            // showProgress(false);
 
             if (success) {
-                remControlApplication.getPostponedAppeals().remove(appealIndex);
-                remControlApplication.savePostponedAppeals();
+                if(appealIndex != -1) {
+                    remControlApplication.getPostponedAppeals().remove(appealIndex);
+                    remControlApplication.savePostponedAppeals();
+                }else {
+                    remControlApplication.setPostponedAppeals(new ArrayList<PostponedAppeal>());
+                    remControlApplication.deleteAllPostponedAppeals();
+                }
+                listPosponedAppeals = remControlApplication.getPostponedAppeals();
                 setAppealListOnView();
+                revisibleButtons();
                 showProgress(false);
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Відправлено успішно!", Toast.LENGTH_SHORT);

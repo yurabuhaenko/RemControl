@@ -1,13 +1,10 @@
 package denver.remcontrol.activitys;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,20 +14,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
-import container.ContainerAppealSent;
+import container.Appeal;
 import denver.remcontrol.R;
-
-import static android.support.v7.internal.widget.AdapterViewCompat.*;
 
 public class AppealSentHistoryActivity extends NavigationDrawerActivity {
 
 
     ListView listViewAppealSents;
     AppealListAdapter appealListAdapter;
-    List<ContainerAppealSent> appealSents = new ArrayList<>();
+    ArrayList<Appeal> appealSents = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +37,13 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
         postCreate(savedInstanceState, R.layout.activity_appeal_sent_history);
 
         listViewAppealSents = (ListView)findViewById(R.id.listViewAppealSent);
-        appealSents = new ArrayList<>();
 
 
-        remControlApplication.setAppealSents(appealSents);
+        if(remControlApplication.getAppealSents()!= null && remControlApplication.getAppealSents().size() > 0) {
+            appealSents = remControlApplication.getAppealSents();
+        }else{
+            appealSents = new ArrayList<Appeal>();
+        }
 
         listViewAppealSents.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -57,15 +57,16 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
             }
         });
         setAppealListOnView();
+        getSupportActionBar().setTitle("Історія звернень");
     }
 
 
     private void setAppealListOnView(){
-        if(remControlApplication.getAppealSents()!= null && remControlApplication.getAppealSents().size() > 0)
-        {
+
+        if(appealSents.size() > 0){
+            appealListAdapter = new AppealListAdapter(appealSents);
             listViewAppealSents.setAdapter(appealListAdapter);
-        }else
-        {
+        }else{
             listViewAppealSents.setAdapter(null);
         }
     }
@@ -74,15 +75,15 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
     private class AppealListAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
-        List<ContainerAppealSent> appealSents;
+        List<Appeal> appealSents;
 
-        public AppealListAdapter(List<ContainerAppealSent> appealSents) {
+        public AppealListAdapter(List<Appeal> appealSents) {
             mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             this.appealSents = appealSents;
             //notifyDataSetChanged();
         }
 
-        public List<ContainerAppealSent> getUserTasks() {
+        public List<Appeal> getUserTasks() {
             return appealSents;
         }
 
@@ -119,12 +120,15 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
                 textViewAddress.setText(appealSents.get(position).getAddress());
                 textViewStatus.setText(appealSents.get(position).getStatus());
                 switch (appealSents.get(position).getStatusCode()){
-                    case 1:
-                        linearLayoutStatus.setBackgroundColor(getResources().getColor(R.color.md_deep_orange_300));
-                    case 2:
-                        linearLayoutStatus.setBackgroundColor(getResources().getColor(R.color.md_yellow_400));
                     case 3:
+                        linearLayoutStatus.setBackgroundColor(getResources().getColor(R.color.md_deep_orange_300));
+                        break;
+                    case 1:
+                        linearLayoutStatus.setBackgroundColor(getResources().getColor(R.color.md_yellow_400));
+                        break;
+                    case 2:
                         linearLayoutStatus.setBackgroundColor(getResources().getColor(R.color.md_light_green_A200));
+                        break;
                 }
 
 

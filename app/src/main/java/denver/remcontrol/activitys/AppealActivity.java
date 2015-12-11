@@ -15,9 +15,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -46,6 +48,16 @@ public class AppealActivity extends NavigationDrawerActivity {
     ImageView mImageView3;
     ImageView mImageView4;
     ImageView mImageView5;
+
+    FloatingActionButton fabDelPhoto1;
+    FloatingActionButton fabDelPhoto2;
+    FloatingActionButton fabDelPhoto3;
+    FloatingActionButton fabDelPhoto4;
+    FloatingActionButton fabDelPhoto5;
+
+
+
+
     EditText editText;
     GetLocation getLocation;
 
@@ -75,6 +87,12 @@ public class AppealActivity extends NavigationDrawerActivity {
         mFormView = findViewById(R.id.new_appeal_form);
         mProgressView = findViewById(R.id.new_appeal_progress);
 
+        fabDelPhoto1 = (FloatingActionButton)findViewById(R.id.myFABImageViewPhoto1);
+        fabDelPhoto2 = (FloatingActionButton)findViewById(R.id.myFABImageViewPhoto2);
+        fabDelPhoto3 = (FloatingActionButton)findViewById(R.id.myFABImageViewPhoto3);
+        fabDelPhoto4 = (FloatingActionButton)findViewById(R.id.myFABImageViewPhoto4);
+        fabDelPhoto5 = (FloatingActionButton)findViewById(R.id.myFABImageViewPhoto5);
+
 
         appeal = new PostponedAppeal();
         mImageView1 = (ImageView)findViewById(R.id.imageViewPhoto1);
@@ -84,7 +102,7 @@ public class AppealActivity extends NavigationDrawerActivity {
         mImageView5 = (ImageView)findViewById(R.id.imageViewPhoto5);
         editText = (EditText)findViewById(R.id.editTextEnterAppealText);
 
-
+        getSupportActionBar().setTitle("Нове звернення");
     }
 
     private void setOnLongClickListenersOnImageToDelete(ImageView view){
@@ -208,11 +226,20 @@ public class AppealActivity extends NavigationDrawerActivity {
     }
 
     private void setPic(int curPhotoNumb) {
+        RelativeLayout rel = (RelativeLayout)findViewById(getIdPhotoLayoutByNumb(curPhotoNumb));
+        rel.setVisibility(View.VISIBLE);
+        rel.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
+        rel.getLayoutParams().width = (int) getResources().getDimension(R.dimen.imageview_width);
+
         ImageView mImageView = getViewByCurrentNumber(curPhotoNumb);
+       // FloatingActionButton fab = getFABByCurrentNumber(curPhotoNumb);
+        //fab.setVisibility(View.VISIBLE);
+
         mImageView.getLayoutParams().width = (int) getResources().getDimension(R.dimen.imageview_width);
+        mImageView.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
 
         int targetW = mImageView.getLayoutParams().width;
-        int targetH = mImageView.getHeight();
+        int targetH = mImageView.getLayoutParams().height;
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -231,6 +258,7 @@ public class AppealActivity extends NavigationDrawerActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
+
     }
 
     private ImageView getViewByCurrentNumber(int curPhotoNumb){
@@ -254,19 +282,108 @@ public class AppealActivity extends NavigationDrawerActivity {
         return mImageView1;
     }
 
+    private ImageView getFirstFreeImageView(){
+        if(appeal.getPhoto1() == ""){return mImageView1;}
+        if(appeal.getPhoto2() == ""){return mImageView2;}
+        if(appeal.getPhoto3() == ""){return mImageView3;}
+        if(appeal.getPhoto4() == ""){return mImageView4;}
+        if(appeal.getPhoto5() == ""){return mImageView5;}
+        return null;
+    }
 
+    private FloatingActionButton getFABByCurrentNumber(int curPhotoNumb){
+        switch (curPhotoNumb){
+            case 1:
+                return fabDelPhoto1;
+            // break;
+            case 2:
+                return fabDelPhoto2;
+            //break;
+            case 3:
+                return fabDelPhoto3;
+            //break;
+            case 4:
+                return fabDelPhoto4;
+            //break;
+            case 5:
+                return fabDelPhoto5;
+            // break;
+        }
+        return fabDelPhoto1;
+    }
 
+    private int getIdPhotoLayoutByNumb(int curPhotoNumb){
+        switch (curPhotoNumb){
+            case 1:
+                return R.id.photoLayout1;
+            // break;
+            case 2:
+                return R.id.photoLayout2;
+            //break;
+            case 3:
+                return R.id.photoLayout3;
+            //break;
+            case 4:
+                return R.id.photoLayout4;
+            //break;
+            case 5:
+                return R.id.photoLayout5;
+            // break;
+        }
+        return R.id.photoLayout1;
+    }
 
 
 
 
 
     public void onClickDeletePhoto(View view){
-       // String id = view.getId();
+        switch (view.getId()){
+            case R.id.myFABImageViewPhoto1:
+                fabDelPhoto1 = null;
+                deletePhotoFromMemory(1);
+            break;
+            case R.id.myFABImageViewPhoto2:
+                fabDelPhoto2 = null;
+                deletePhotoFromMemory(2);
+            break;
+            case R.id.myFABImageViewPhoto3:
+                fabDelPhoto3 = null;
+                deletePhotoFromMemory(3);
+            break;
+            case R.id.myFABImageViewPhoto4:
+                fabDelPhoto4 = null;
+                deletePhotoFromMemory(4);
+            break;
+            case R.id.myFABImageViewPhoto5:
+                fabDelPhoto5 = null;
+                deletePhotoFromMemory(5);
+            break;
+        }
 
     }
 
+    private void deletePhotoFromMemory(int photoNumber){
 
+        RelativeLayout rel = (RelativeLayout)findViewById(getIdPhotoLayoutByNumb(photoNumber));
+        rel.setVisibility(View.GONE);
+        rel.getLayoutParams().height = 0;
+        rel.getLayoutParams().width = 0;
+
+        ImageView mImageView = getViewByCurrentNumber(photoNumber);
+        FloatingActionButton fab = getFABByCurrentNumber(photoNumber);
+        //fab.setVisibility(View.GONE);
+
+        mImageView.getLayoutParams().height = 0;
+        mImageView.getLayoutParams().width = 0;
+
+        String dir = getFilesDir().getAbsolutePath();
+
+        File f0 = new File(dir, appeal.getPhotoByNumber(photoNumber));
+        boolean d0 = f0.delete();
+        appeal.addPhotoByNumber(photoNumber, null);
+
+    }
 
 
 
@@ -322,8 +439,7 @@ public class AppealActivity extends NavigationDrawerActivity {
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
-            appeal.setDatetime(Integer.toString(day) + "-" + Integer.toString(month) + "-" + Integer.toString(year) + " "
-                                + Integer.toString(hour) + ":" + Integer.toString(minute));
+            appeal.setDatetime(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date()));
 
             remControlApplication.getPostponedAppeals().add(appeal);
             remControlApplication.savePostponedAppeals();
