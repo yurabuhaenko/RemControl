@@ -109,6 +109,23 @@ public class PostponedAppeal {
         this.lon = lon;
     }
 
+    public String getPhotoByNumber(int number){
+        switch (number){
+            case 1:
+                return photo1;
+            case 2:
+                return photo2;
+            case 3:
+                return photo3;
+            case 4:
+                return photo4;
+            case 5:
+                return photo5;
+
+        }
+        return "";
+    }
+
     public void addPhotoByNumber(int number, String photo){
 
         switch (number){
@@ -131,6 +148,18 @@ public class PostponedAppeal {
                 break;
         }
 
+    }
+
+    public boolean isPhotos(){
+        if(photo1 != null || photo2 != null || photo3 != null || photo4 != null || photo5 != null){
+           if(photo1 != "" || photo2 != "" || photo3 != "" || photo4 != "" || photo5 != ""){
+               return true;
+           } else {
+               return false;
+           }
+        }else{
+            return false;
+        }
     }
 
 
