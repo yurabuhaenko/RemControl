@@ -4,16 +4,22 @@
 
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
 
+    <string name="about_project_0">Ресурси:</string>
+    <string name="about_project_1">Створено на базі відкритого API сервісу "1551" КБУ «Контактний центр міста Києва»</string>
+    <string name="about_project_2">Офіційний сайт: </string>
+    <string name="about_project_href_1551"><a href="http://www.1551.gov.ua">www.1551.gov.ua</a></string>
 
-
-
+    <string name="about_project_3">Розробники:</string>
+    <string name="about_project_4">Бугаєнко Юрій Михайлович</string>
+    <string name="about_project_5">Похилінський Сергій Анатолійович</string>
+    <string name="about_project_6">Київ 2015</string>
 
     <string name="create_appeal">Створити звернення</string>
     <string name="postponed">Відкладені</string>
     <string name="history">Історія звернень</string>
 
     <string name="about_project">Про проект</string>
-    <string name="settings">Налаштування</string>
+    <string name="log_out">Вийти з системи</string>
     <string name="help">Допомога</string>
 
     <string name="login">Увійти</string>
@@ -47,5 +53,6 @@
     <string name="status">Статус:</string>
     <string name="text">Ваш коментар:</string>
     <string name="title_activity_postponed_appeals_list">PostponedAppealsListActivity</string>
+    <string name="title_activity_about_project">AboutProject</string>
 
 </resources>

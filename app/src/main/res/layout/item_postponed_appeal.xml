@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:background="@color/md_grey_100"
+        android:padding="4dp"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        >
+
+    <EditText
+        android:id="@+id/textOfAppeal"
+        android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:maxLength="500"
+
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/textDateTimeOfSave"
+        android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:maxLength="30"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:id="@+id/horizontalScrollViewPhotos"
+        android:layout_below="@+id/textDateTimeOfSave"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:id="@+id/xml_full_img_linear_below_view"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:orientation="horizontal"
+            android:gravity="left">
+
+            <RelativeLayout
+                android:id="@+id/photoAppealLayout1"
+                android:visibility="invisible"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+
+                    android:id="@+id/imageViewPhotoSaved1"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/myFABImageViewPostponedPhoto1"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+
+                    android:src="@drawable/del_phot_fab"
+                    android:clickable="true"
+
+                    app:layout_anchorGravity="top|right"
+                    app:elevation="1dp"
+                    app:borderWidth="0dp"
+                    android:onClick="onClickDeletePhoto"
+
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/photoAppealLayout2"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+
+                    android:id="@+id/imageViewPhotoSaved2"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/myFABImageViewPostponedPhoto2"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/del_phot_fab"
+                    android:clickable="true"
+
+                    app:layout_anchorGravity="top|right"
+                    app:elevation="1dp"
+                    app:borderWidth="0dp"
+                    android:onClick="onClickDeletePhoto"
+
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+
+                    />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/photoAppealLayout3"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+
+                    android:id="@+id/imageViewPhotoSaved3"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/myFABImageViewPostponedPhoto3"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/del_phot_fab"
+                    android:clickable="true"
+
+                    app:layout_anchorGravity="top|right"
+                    app:elevation="1dp"
+                    app:borderWidth="0dp"
+                    android:onClick="onClickDeletePhoto"
+
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/photoAppealLayout4"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+
+                    android:id="@+id/imageViewPhotoSaved4"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/myFABImageViewPostponedPhoto4"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/del_phot_fab"
+                    android:clickable="true"
+
+                    app:layout_anchorGravity="top|right"
+                    app:elevation="1dp"
+                    app:borderWidth="0dp"
+                    android:onClick="onClickDeletePhoto"
+
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/photoAppealLayout5"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+
+                    android:id="@+id/imageViewPhotoSaved5"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/myFABImageViewPostponedPhoto5"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/del_phot_fab"
+                    android:clickable="true"
+
+                    app:layout_anchorGravity="top|right"
+                    app:elevation="1dp"
+                    app:borderWidth="0dp"
+                    android:onClick="onClickDeletePhoto"
+
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+
+                    />
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/onClickSentPostponedAppeal"
+        android:layout_width="match_parent"
+        android:text="Відправити"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+    </LinearLayout>
+</LinearLayout>

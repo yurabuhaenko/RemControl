@@ -9,16 +9,17 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
+    android:largeHeap="true"
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name="system.RemControlApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activitys.AppealActivity"
@@ -48,6 +49,16 @@
         <activity
             android:name=".activitys.PostponedAppealsListActivity"
             android:label="@string/title_activity_postponed_appeals_list" >
+        </activity>
+
+        <service
+            android:name="services.AuthorizationIntentService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name=".activitys.AboutProject"
+            android:label="@string/title_activity_about_project" >
         </activity>
     </application>
 
