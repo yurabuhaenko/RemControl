@@ -1,7 +1,8 @@
 package container;
 
 /**
- * Created by Denver on 05.09.2015.
+ * @author yurabuhaenko
+ * Class-container to hold all user information
  */
 public class User {
 
@@ -11,7 +12,9 @@ public class User {
     private String surname;
     private String password;
 
-
+    /**
+     * default constructor
+     */
     public User(){
         this.surname = "";
         this.name = "";
@@ -19,12 +22,25 @@ public class User {
         this.password = "";
     }
 
+    /**
+     * constructor without password
+     * @param name
+     * @param email
+     * @param surname
+     */
     public User(String name, String email, String surname){
         this.surname = surname;
         this.name = name;
         this.email = email;
     }
 
+    /**
+     * constructor for all fields
+     * @param name
+     * @param email
+     * @param surname
+     * @param password
+     */
     public User(String name, String email, String surname, String password){
         this.surname = surname;
         this.name = name;

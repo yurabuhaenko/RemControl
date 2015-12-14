@@ -38,9 +38,18 @@ import system.InternetConnectionChecker;
 import system.RemControlApplication;
 
 
+/**
+ * @author yurabuhaenko
+ *
+ * Main application activity. Here created appeal, added photo. Oportunity to send it on server or save to postponed
+ *extends
+ * @see NavigationDrawerActivity
+ */
 public class AppealActivity extends NavigationDrawerActivity {
 
-
+    /**
+     * container for current appeal
+     */
     private PostponedAppeal appeal;
 
     ImageView mImageView1;
@@ -68,6 +77,13 @@ public class AppealActivity extends NavigationDrawerActivity {
     private View mProgressView;
     private View mFormView;
 
+
+    /**
+     * default on create method, executes when activity and view created. Initializing vars and views
+     * chk if no register user - redirect to
+     * @link LoginActivity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,46 +121,28 @@ public class AppealActivity extends NavigationDrawerActivity {
         getSupportActionBar().setTitle("Нове звернення");
     }
 
-    private void setOnLongClickListenersOnImageToDelete(ImageView view){
-
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                AlertDialog.Builder ad;
-                Context context;
-                context = AppealActivity.this;
-                ad = new AlertDialog.Builder(context);
-                ad.setTitle("Delete selected photo");
-                ad.setMessage("You want to delete this photos?");
-                ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-
-                    }
-                });
-                ad.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        return;
-                    }
-                });
-
-                ad.setCancelable(true);
-                ad.show();
-                return false;
-            }
-        });
-
-    }
-
-
+    /**
+     * default on start method, executes before activity stars.
+     * initializing  location service
+     */
     @Override
     public void onStart(){
         super.onStart();
         getLocation = new GetLocation(this);
     }
 
-
+    /**
+     * number of current photo (1 to 5) in which new photo will be setted
+     */
     private int curPhotoNumb = 0;
 
+
+    /**
+     * on click for add photo button.
+     * curPhotoNumb sets & dispatchTakePictureIntent() executes
+     * if photos number == 5 error shows
+     * @param view
+     */
     public void onClickButtonAddPhoto(View view){
         if(appeal.getPhoto1() == null) {
             curPhotoNumb = 1;
@@ -171,14 +169,25 @@ public class AppealActivity extends NavigationDrawerActivity {
 
     }
 
+
+    /**
+     * default metod, executes when on result activity closed and send result
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         setPic(curPhotoNumb);
-
     }
 
     static final int REQUEST_TAKE_PHOTO = 1;
 
+
+    /**
+     * take empty image file, sent it on intent of onResultActivity
+     * onResultActivity starts (default camera application)
+     */
     private void dispatchTakePictureIntent() {
 
 
@@ -204,7 +213,12 @@ public class AppealActivity extends NavigationDrawerActivity {
 
     }
 
-
+    /**
+     * creating empty image on default file storage and current time as unique name
+     * set on
+     * @return empty image file
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -221,11 +235,17 @@ public class AppealActivity extends NavigationDrawerActivity {
         mCurrentPhotoPathFile = "file:" + image.getAbsolutePath();
         mCurrentPhotoPath = image.getAbsolutePath();
 
-        appeal.addPhotoByNumber(curPhotoNumb, mCurrentPhotoPath);
         return image;
     }
 
+
+    /**
+     * set photo path on appeal, set photo on view by number
+     * resize photo bitmap to required size
+     * @param curPhotoNumb
+     */
     private void setPic(int curPhotoNumb) {
+        appeal.addPhotoByNumber(curPhotoNumb, mCurrentPhotoPath);
         RelativeLayout rel = (RelativeLayout)findViewById(getIdPhotoLayoutByNumb(curPhotoNumb));
         rel.setVisibility(View.VISIBLE);
         rel.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_height);
@@ -261,6 +281,11 @@ public class AppealActivity extends NavigationDrawerActivity {
 
     }
 
+    /**
+     * @param curPhotoNumb
+     * @return photo view element by current number of photo
+     */
+
     private ImageView getViewByCurrentNumber(int curPhotoNumb){
         switch (curPhotoNumb){
             case 1:
@@ -282,15 +307,12 @@ public class AppealActivity extends NavigationDrawerActivity {
         return mImageView1;
     }
 
-    private ImageView getFirstFreeImageView(){
-        if(appeal.getPhoto1() == ""){return mImageView1;}
-        if(appeal.getPhoto2() == ""){return mImageView2;}
-        if(appeal.getPhoto3() == ""){return mImageView3;}
-        if(appeal.getPhoto4() == ""){return mImageView4;}
-        if(appeal.getPhoto5() == ""){return mImageView5;}
-        return null;
-    }
 
+    /**
+     *
+     * @param curPhotoNumb
+     * @return floating action button view element by current number of photo
+     */
     private FloatingActionButton getFABByCurrentNumber(int curPhotoNumb){
         switch (curPhotoNumb){
             case 1:
@@ -312,6 +334,12 @@ public class AppealActivity extends NavigationDrawerActivity {
         return fabDelPhoto1;
     }
 
+
+    /**
+     *
+     * @param curPhotoNumb
+     * @return int id of photo view  element
+     */
     private int getIdPhotoLayoutByNumb(int curPhotoNumb){
         switch (curPhotoNumb){
             case 1:
@@ -334,8 +362,10 @@ public class AppealActivity extends NavigationDrawerActivity {
     }
 
 
-
-
+    /**
+     * on click method. Find for which photo it was executed & executes deletePhotoFromMemory() for this photo
+     * @param view
+     */
 
     public void onClickDeletePhoto(View view){
         switch (view.getId()){
@@ -363,6 +393,12 @@ public class AppealActivity extends NavigationDrawerActivity {
 
     }
 
+
+    /**
+     * deleting photo from memory & appeal, hides layout of image
+     * @param photoNumber
+     */
+
     private void deletePhotoFromMemory(int photoNumber){
 
         RelativeLayout rel = (RelativeLayout)findViewById(getIdPhotoLayoutByNumb(photoNumber));
@@ -386,10 +422,16 @@ public class AppealActivity extends NavigationDrawerActivity {
     }
 
 
-
+    /**
+     * on click metod to execute sending appeal into server
+     * check if length of appeal text more than 20 symbols & is coordinates
+     * check if internet connection available
+     * @param view
+     */
 
     public void onClickSent(View view){
-        if (editText.getText().toString().length() < 20) {
+        getLocation();
+        if (editText.getText().toString().length() > 20) {
             if (appeal.getLat() != "0" && appeal.getLon() != "0") {
 
                 if (InternetConnectionChecker.isNetworkConnected(this)) {
@@ -399,7 +441,11 @@ public class AppealActivity extends NavigationDrawerActivity {
                             editText.getText().toString(), AppealActivity.this);
                     sentAppeal.execute((Void) null);
 
+                }else {
+                    Toast.makeText(this, "Помилка! \n Відсутнє з’єднання з інтернетом. Ви можете " +
+                            "зберегти звернення у відкладені", Toast.LENGTH_LONG).show();
                 }
+
             } else {
                 Toast.makeText(this, "Помилка! \n Неможливо визначити координати", Toast.LENGTH_LONG).show();
             }
@@ -409,9 +455,12 @@ public class AppealActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     *
+     * get coordinates & set it to appeal
+     */
 
-
-    public void onClickGetLocation(View view){
+    public void getLocation(){
         //getLocation = new GetLocation(this);
 
             if (getLocation.IsAvailable()){
@@ -428,34 +477,52 @@ public class AppealActivity extends NavigationDrawerActivity {
 
     }
 
+    /**
+     * on click method.
+     * Check is text lenght more than 20 symbols or one or more photos available. Toast error
+     * save appeal to
+     * @see RemControlApplication
+     * and save into Shared Preferences
+     * @param view
+     */
     public void onClickSaveToPostponed(View view){
-        appeal.setText(editText.getText().toString());
-        if(appeal.getText() != "") {
+        getLocation();
+        if (editText.getText().toString().length() > 20 || appeal.isPhotos()) {
+            if (appeal.getLat() != "0" && appeal.getLon() != "0") {
 
-            Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+                appeal.setText(editText.getText().toString());
+                Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
 
-            appeal.setDatetime(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date()));
+                appeal.setDatetime(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date()));
 
-            remControlApplication.getPostponedAppeals().add(appeal);
-            remControlApplication.savePostponedAppeals();
+                remControlApplication.getPostponedAppeals().add(appeal);
+                remControlApplication.savePostponedAppeals();
 
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Збережено успішно!", Toast.LENGTH_SHORT);
-            toast.show();
-            Intent newIntent = new Intent(AppealActivity.this, AppealActivity.class);
-            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(newIntent);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Збережено успішно!", Toast.LENGTH_SHORT);
+                toast.show();
+                Intent newIntent = new Intent(AppealActivity.this, AppealActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+            } else {
+                Toast.makeText(this, "Помилка! \n Неможливо визначити координати", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(this, "Помилка! \n Для збереження потрібен текст більше 20 символів або наявне фото!", Toast.LENGTH_LONG).show();
         }
     }
 
 
-
+    /**
+     * show or hide progress bar
+     * @param show if true - progress bar shown, activity layout hides; if false - progress bar hides, activity layout shown;
+     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -491,6 +558,12 @@ public class AppealActivity extends NavigationDrawerActivity {
 
 
 
+
+    /**
+     * @author SergPohh
+     * asynchronic class to sent appeal on server
+     */
+
     public class SentAppeal extends AsyncTask<Void, Void, Boolean> {
 
         int houseId = -1;
@@ -500,13 +573,27 @@ public class AppealActivity extends NavigationDrawerActivity {
         final Context cont;
 
 
-
+        /**
+         * Constructor with params of appeal which will be saved
+         * @param lat
+         * @param lang
+         * @param appealText
+         * @param cont
+         */
         SentAppeal(String lat, String lang, String appealText, Context cont) {
             this.lat = lat;
             this.lang = lang;
             this.appealText = appealText;
             this.cont = cont;
         }
+
+
+        /**
+         * At first get house id by coordinates
+         * At second sent appeal to server
+         * @param params
+         * @return true if sending was success
+         */
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -524,6 +611,11 @@ public class AppealActivity extends NavigationDrawerActivity {
         }
 
 
+        /**
+         * If sending was successful make toast with success massage, clean activities stack and start new AppealActivity
+         * If sending was fail make toast with error massage
+         * @param success result of doInBackground()
+         */
         @Override
         protected void onPostExecute ( final Boolean success){
            // mAuthTask = null;

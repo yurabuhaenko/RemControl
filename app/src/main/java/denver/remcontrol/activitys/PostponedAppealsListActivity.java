@@ -40,7 +40,13 @@ import system.ActionHttp;
 import system.InternetConnectionChecker;
 import system.RemControlApplication;
 
-
+/**
+ * @author  yurabuhaenko
+ *
+ * Activity to show list of postponed appeals and their photos
+ *
+ * @see NavigationDrawerActivity
+ */
 public class PostponedAppealsListActivity extends NavigationDrawerActivity {
 
 
@@ -58,6 +64,12 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     FloatingActionButton newAppeal;
     FloatingActionButton sentAllPostponedAppeals;
 
+
+    /**
+     * default on create method
+     * initialize view elements
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +81,12 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
 
         listPosponedAppeals = remControlApplication.getPostponedAppeals();
 
-
         mProgressView = findViewById(R.id.sent_postponed_appeal_progress);
 
        // setAppealListOnView();
 
-
         newAppeal = (FloatingActionButton)findViewById(R.id.myFABCreateNewAppeal);
         sentAllPostponedAppeals = (FloatingActionButton)findViewById(R.id.myFABSentAllPostponedAppeals);
-
 
 
         mListViewPosponedAppeals = findViewById(R.id.scrollViewPostponedAppeals);
@@ -88,7 +97,11 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     }
 
 
-
+    /**
+     * default on resume method
+     * perform change fab buttons
+     * perform to set appeal list view
+     */
     @Override
     protected void onResume(){
         super.onResume();
@@ -96,6 +109,13 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         setAppealListOnView();
     }
 
+
+    /**
+     * default on pause method
+     * saving all appeals on
+     * @see RemControlApplication
+     * SharedPreferences
+     */
     @Override
     protected void onPause(){
         super.onPause();
@@ -104,6 +124,11 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * Set current displayed FAB
+     * if no appeals set FAB redirect to new appeal
+     * if are appeals set FAB send al to server
+     */
     private void revisibleButtons(){
         if(listPosponedAppeals.size() > 0){
             sentAllPostponedAppeals.setVisibility(View.VISIBLE);
@@ -114,7 +139,12 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         }
     }
 
-
+    /**
+     * redirect to
+     * @see AppealActivity
+     * activity stack get cleaned
+     * @param view
+     */
     public void onClickNewAppeal(View view){
         Intent newIntent = new Intent(PostponedAppealsListActivity.this, AppealActivity.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -122,18 +152,26 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         startActivity(newIntent);
     }
 
+
+    /**
+     * sent all postponed appeals to server
+     * @param view
+     */
     public void onClickSentAllAppeals(View view){
         if(InternetConnectionChecker.isNetworkConnected(PostponedAppealsListActivity.this)){
             SentAppeal sentAppeal = new SentAppeal(listPosponedAppeals, PostponedAppealsListActivity.this);
             sentAppeal.execute();
         }else{
-            Toast.makeText(PostponedAppealsListActivity.this, "Помилка! \n Неможливо визначити координати", Toast.LENGTH_LONG).show();
+            Toast.makeText(PostponedAppealsListActivity.this, "Помилка! \n Немає з’єднання з інтернетом!", Toast.LENGTH_LONG).show();
         }
     }
 
 
-
-
+    /**
+     * set Appeal List On View
+     * create adapter, execute getView() for each appeal
+     * set on view
+     */
     private void setAppealListOnView(){
 
         if(listPosponedAppeals.size() > 0){
@@ -149,11 +187,19 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * @author yurabuhaenko
+     * adapter class to hold appeals list and set appel in item layout
+     */
     private class AppealListAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
         ArrayList<PostponedAppeal> listPosponedAppeals;
 
+        /**
+         *
+         * @param listPosponedAppeals list of appeals to set on view
+         */
         public AppealListAdapter(ArrayList<PostponedAppeal> listPosponedAppeals ) {
             mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             this.listPosponedAppeals = listPosponedAppeals;
@@ -177,7 +223,16 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         }
 
 
-
+        /**
+         * auto executed method
+         * All data sets on item layout
+         * creates onclick for FABs
+         * Sets all parameters of displayed item layout (visibility, width, height)
+         * @param position number of appeal for which it was executed
+         * @param convertView current item layout
+         * @param parent parent view
+         * @return item layout for display one appeal
+         */
         public View getView(final int position, View convertView, ViewGroup parent) {
 
             final PostponedAppeal appeal = listPosponedAppeals.get(position);
@@ -424,8 +479,13 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         }
 
 
-
-
+        /**
+         * set photo by path on view
+         * resize photo bitmap to required size
+         * @param mImageView view on which photo will be seted
+         * @param relLay parent layout
+         * @param mCurrentPhotoPath path to photo to display
+         */
         private void setPic(final ImageView mImageView, RelativeLayout relLay, final String mCurrentPhotoPath) {
             relLay.setVisibility(View.VISIBLE);
             relLay.getLayoutParams().width = (int) getResources().getDimension(R.dimen.imageview_width);
@@ -466,7 +526,10 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     }
 
 
-
+    /**
+     * show or hide progress bar
+     * @param show if true - progress bar shown, activity layout hides; if false - progress bar hides, activity layout shown;
+     */
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -500,6 +563,12 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
     }
 
 
+
+    /**
+     * @author SergPohh
+     * asynchronic class to sent single appeal or list to server
+     */
+
     private class SentAppeal extends AsyncTask<Void, Void, Boolean> {
 
         int houseId = -1;
@@ -508,11 +577,23 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
         int appealIndex = -1;
         ArrayList<PostponedAppeal> appeals;
 
+        /**
+         * constructor to list of appeals
+         * @param appeals list appeals to sent
+         * @param cont activity context
+         */
         SentAppeal(ArrayList<PostponedAppeal> appeals,  Context cont) {
             this.appeals = appeals;
             this.cont = cont;
         }
 
+        /**
+         * constructor to single appeal
+         *
+         * @param appeal appeal to sent
+         * @param appealIndex index of sended appeal
+         * @param cont activity context
+         */
         SentAppeal(PostponedAppeal appeal, int appealIndex, Context cont) {
             appeals = new ArrayList<PostponedAppeal>();
             appeals.add(appeal);
@@ -520,11 +601,22 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
             this.appealIndex = appealIndex;
         }
 
+        /**
+         * display progress bar
+         */
         @Override
         protected void onPreExecute(){
             showProgress(true);
         }
 
+        /**
+         *
+         * @param params
+         * @return if appeals was successfully sended
+         *
+         * At first get house id by coordinates
+         * At second sent appeals to server
+         */
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -542,7 +634,14 @@ public class PostponedAppealsListActivity extends NavigationDrawerActivity {
             return true;
         }
 
-
+        /**
+         * If sending was successful make toast with success massage,
+         * delete all sended appeals from postponed on
+         * @see RemControlApplication
+         * Shared preferences
+         * If sending was fail make toast with error massage
+         * @param success result of doInBackground()
+         */
         @Override
         protected void onPostExecute ( final Boolean success){
             // mAuthTask = null;

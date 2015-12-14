@@ -72,9 +72,10 @@
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/myFABImageViewPostponedPhoto1"
-                    android:layout_width="27dp"
-                    android:layout_height="27dp"
-                    android:src="@drawable/doc51956101"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+
+                    android:src="@drawable/del_phot_fab"
                     android:clickable="true"
 
                     app:layout_anchorGravity="top|right"
@@ -108,7 +109,7 @@
                     android:id="@+id/myFABImageViewPostponedPhoto2"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
-                    android:src="@drawable/doc51956101"
+                    android:src="@drawable/del_phot_fab"
                     android:clickable="true"
 
                     app:layout_anchorGravity="top|right"
@@ -143,7 +144,7 @@
                     android:id="@+id/myFABImageViewPostponedPhoto3"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
-                    android:src="@drawable/doc51956101"
+                    android:src="@drawable/del_phot_fab"
                     android:clickable="true"
 
                     app:layout_anchorGravity="top|right"
@@ -177,7 +178,7 @@
                     android:id="@+id/myFABImageViewPostponedPhoto4"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
-                    android:src="@drawable/doc51956101"
+                    android:src="@drawable/del_phot_fab"
                     android:clickable="true"
 
                     app:layout_anchorGravity="top|right"
@@ -211,7 +212,7 @@
                     android:id="@+id/myFABImageViewPostponedPhoto5"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
-                    android:src="@drawable/doc51956101"
+                    android:src="@drawable/del_phot_fab"
                     android:clickable="true"
 
                     app:layout_anchorGravity="top|right"

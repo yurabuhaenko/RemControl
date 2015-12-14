@@ -13,7 +13,8 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 /**
- * Created by Denver on 06.09.2015.
+ * @author yurabuhaenko
+ * class to get GPS coordinates of current place
  */
 public class GetLocation  implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -23,6 +24,10 @@ public class GetLocation  implements
     protected Location mLocation;
     protected boolean isAvailable = false;
 
+    /**
+     *
+     * @param _context context of activity which perform getting location
+     */
     public GetLocation(Context _context){
         context = _context;
         mGoogleApiClient = new GoogleApiClient.Builder(context)
@@ -33,10 +38,22 @@ public class GetLocation  implements
         mGoogleApiClient.connect();
     }
 
+    /**
+     * Get Latitude
+     * @return Latitude
+     */
     public double GetLatitude() {if (mLocation == null) return -1; else return mLocation.getLatitude();}
 
+    /**
+     * Get Longitude
+     * @return Longitude
+     */
     public double GetLongitude() {if (mLocation == null) return -1; else return mLocation.getLongitude();}
 
+    /**
+     * check if GPS services is available
+     * @return true if GPS services is available
+     */
     public boolean IsAvailable() {return isAvailable;}
 
     @Override
@@ -61,4 +78,5 @@ public class GetLocation  implements
         Log.i("get-location", "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
         mGoogleApiClient.connect();
     }
+
 }

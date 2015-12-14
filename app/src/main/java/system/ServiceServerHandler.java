@@ -1,7 +1,10 @@
 package system;
 
 /**
- * Created by Denver on 06.09.2015.
+ * Class to make http request
+ * Cookies handles here
+ * @author SergPohh
+ *
  */
 
 import android.content.Context;
@@ -26,17 +29,22 @@ import java.util.List;
 
 import container.ContainerSignInResponse;
 
-public class ServiceServerHandler {
+    public class ServiceServerHandler {
 
-    static String response = null;
-    private final String URL = "http://1551.gov.ua/mobile/";
+        static String response = null;
+        private final String URL = "http://1551.gov.ua/mobile/";
 
     public ServiceServerHandler() {
 
     }
 
 
-
+        /**
+         * Main method to send request and get response
+         * @param params list of name pair values to set it on parametrs on http request
+         * @param cont context of application which produced request
+         * @return XML string from http response
+         */
     public String makeServiceCall(List<NameValuePair> params, Context cont){
 
         try {
@@ -94,6 +102,7 @@ public class ServiceServerHandler {
         return response;
 
     }
+
 
     public static HttpEntity makeServiceCallForEntity(String url){
         HttpClient httpclient = new DefaultHttpClient();

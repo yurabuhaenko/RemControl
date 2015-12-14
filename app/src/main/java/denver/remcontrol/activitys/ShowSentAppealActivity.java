@@ -35,6 +35,13 @@ import denver.remcontrol.R;
 import system.ActionHttp;
 import system.ServiceServerHandler;
 
+
+/**
+ * @author yurabuhaenko
+ * activity to show one full user appeal from server
+ * extends
+ * @see NavigationDrawerActivity
+ */
 public class ShowSentAppealActivity extends NavigationDrawerActivity {
 
     Appeal appealSent;
@@ -58,6 +65,13 @@ public class ShowSentAppealActivity extends NavigationDrawerActivity {
 
     private View mProgressView;
 
+
+    /**
+     * default on create method
+     * initialize view elements
+     * get appeal from intent
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +141,10 @@ public class ShowSentAppealActivity extends NavigationDrawerActivity {
     private boolean isDownloadedPhotos = false;
 
 
-
+    /**
+     * perform getting photos of appeal from server
+     * @param view
+     */
     public void onClickButtonAddPhoto(View view){
         if(isVisiblePhoros){
             isVisiblePhoros = false;
@@ -147,7 +164,11 @@ public class ShowSentAppealActivity extends NavigationDrawerActivity {
         }
     }
 
-
+    /**
+     * get image by number
+     * @param curPhotoNumb number of view to get
+     * @return imageView according to number
+     */
     private ImageView getViewByCurrentNumber(int curPhotoNumb){
         switch (curPhotoNumb){
             case 1:
@@ -171,8 +192,10 @@ public class ShowSentAppealActivity extends NavigationDrawerActivity {
 
 
 
-
-
+    /**
+     * show or hide progress bar
+     * @param show if true - progress bar shown, activity layout hides; if false - progress bar hides, activity layout shown;
+     */
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -199,6 +222,10 @@ public class ShowSentAppealActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * Doest work
+     * get crash on bitmap factory
+     */
     public class ImageDownloadingTask extends AsyncTask<Void, Void, Boolean> {
 
         private ArrayList<String> urls;
@@ -219,76 +246,6 @@ public class ShowSentAppealActivity extends NavigationDrawerActivity {
         }
 
 
-        /*
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            for(int i = 0; i < urls.size() && i < 5; ++i){
-
-                Drawable drawable = loadImageFromWebOperations(urls.get(i));
-                if (drawable == null){
-                    return false;
-                }else {
-                    d.add(drawable);
-                }
-            }
-            return true;
-        }
-
-        private Drawable loadImageFromWebOperations(String url) {
-            try {
-                //url = "https://1551.gov.ua" + url;
-url = "http://social.gseosem.com/wp-content/plugins/wp-o-matic/cache201508/92f1ba5e96_b2e2t.png";
-
-                //urlsrc = "http://social.gseosem.com/wp-content/plugins/wp-o-matic/cache201508/92f1ba5e96_b2e2t.png";
-                Bitmap bmp = null;
-                HttpEntity entity = ServiceServerHandler.makeServiceCallForEntity(url);
-                Drawable draw = null;
-                if (entity != null) {
-                    InputStream instream = entity.getContent();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    int bufferSize = 1024;
-                    byte[] buffer = new byte[bufferSize];
-                    int len = 0;
-
-                    // instream is content got from httpentity.getContent()
-                    while ((len = instream.read(buffer)) != -1) {
-                        baos.write(buffer, 0, len);
-                    }
-                    baos.close();
-                    draw = Drawable.createFromStream(instream, "src name");
-                }
-
-
-                return draw;
-            } catch (Exception e) {
-                error = e.getMessage();
-                return null;
-            }
-        }
-
-            @Override
-            protected void onPostExecute ( final Boolean success){
-
-                showProgress(false);
-
-                if (success) {
-                    for (int i = 0; i < d.size() && i < 5; ++i) {
-                        ImageView image = getViewByCurrentNumber(i + 1);
-                        if (d.get(i).equals(null)) {
-                            Toast t = Toast.makeText(ShowSentAppealActivity.this, "Error. Unnable to download!", Toast.LENGTH_LONG);
-                        } else {
-                            image.setImageDrawable(d.get(i));
-                        }
-                    }
-                    isDownloadedPhotos = true;
-                } else {
-                    Toast t = Toast.makeText(ShowSentAppealActivity.this, "Error. Unnable to download!", Toast.LENGTH_LONG);
-                }
-            }
-
-
-
-        */
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -370,7 +327,76 @@ url = "http://social.gseosem.com/wp-content/plugins/wp-o-matic/cache201508/92f1b
             }
 
 
+ /*
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            for(int i = 0; i < urls.size() && i < 5; ++i){
 
+                Drawable drawable = loadImageFromWebOperations(urls.get(i));
+                if (drawable == null){
+                    return false;
+                }else {
+                    d.add(drawable);
+                }
+            }
+            return true;
+        }
+
+        private Drawable loadImageFromWebOperations(String url) {
+            try {
+                //url = "https://1551.gov.ua" + url;
+url = "http://social.gseosem.com/wp-content/plugins/wp-o-matic/cache201508/92f1ba5e96_b2e2t.png";
+
+                //urlsrc = "http://social.gseosem.com/wp-content/plugins/wp-o-matic/cache201508/92f1ba5e96_b2e2t.png";
+                Bitmap bmp = null;
+                HttpEntity entity = ServiceServerHandler.makeServiceCallForEntity(url);
+                Drawable draw = null;
+                if (entity != null) {
+                    InputStream instream = entity.getContent();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    int bufferSize = 1024;
+                    byte[] buffer = new byte[bufferSize];
+                    int len = 0;
+
+                    // instream is content got from httpentity.getContent()
+                    while ((len = instream.read(buffer)) != -1) {
+                        baos.write(buffer, 0, len);
+                    }
+                    baos.close();
+                    draw = Drawable.createFromStream(instream, "src name");
+                }
+
+
+                return draw;
+            } catch (Exception e) {
+                error = e.getMessage();
+                return null;
+            }
+        }
+
+            @Override
+            protected void onPostExecute ( final Boolean success){
+
+                showProgress(false);
+
+                if (success) {
+                    for (int i = 0; i < d.size() && i < 5; ++i) {
+                        ImageView image = getViewByCurrentNumber(i + 1);
+                        if (d.get(i).equals(null)) {
+                            Toast t = Toast.makeText(ShowSentAppealActivity.this, "Error. Unnable to download!", Toast.LENGTH_LONG);
+                        } else {
+                            image.setImageDrawable(d.get(i));
+                        }
+                    }
+                    isDownloadedPhotos = true;
+                } else {
+                    Toast t = Toast.makeText(ShowSentAppealActivity.this, "Error. Unnable to download!", Toast.LENGTH_LONG);
+                }
+            }
+
+
+
+        */
 
 
     }

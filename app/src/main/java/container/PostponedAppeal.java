@@ -1,7 +1,10 @@
 package container;
 
 /**
- * Created by root on 07.12.15.
+ * @author SergPohh
+ *
+ * Class which holds all appeal information before sent it to server
+ *
  */
 public class PostponedAppeal {
 
@@ -9,6 +12,11 @@ public class PostponedAppeal {
     private String lat;
     private String lon;
     private String datetime;
+
+
+    /**
+     * path to photo on cd card from app directory
+     */
     private String photo1;
     private String photo2;
     private String photo3;
@@ -17,6 +25,13 @@ public class PostponedAppeal {
 
     public PostponedAppeal(){}
 
+    /**
+     * Constructor without photo
+     * @param text
+     * @param lat
+     * @param lon
+     * @param datetime
+     */
     public PostponedAppeal(String text, String lat, String lon, String datetime){
         this.text = text;
         this.lat = lat;
@@ -24,6 +39,18 @@ public class PostponedAppeal {
         this.datetime = datetime;
     }
 
+    /**
+     * Constructor with photo
+     * @param text
+     * @param lat
+     * @param lon
+     * @param datetime
+     * @param photo1
+     * @param photo2
+     * @param photo3
+     * @param photo4
+     * @param photo5
+     */
     public PostponedAppeal(String text, String lat, String lon, String datetime, String photo1,
                            String photo2, String photo3, String photo4, String photo5){
         this.text = text;
@@ -109,6 +136,12 @@ public class PostponedAppeal {
         this.lon = lon;
     }
 
+
+    /**
+     * get photo by number of photo
+     * @param number (1-5 int)
+     * @return string path to photo
+     */
     public String getPhotoByNumber(int number){
         switch (number){
             case 1:
@@ -126,6 +159,12 @@ public class PostponedAppeal {
         return "";
     }
 
+
+    /**
+     * Set photo by number
+     * @param number (1-5 int)
+     * @param photo
+     */
     public void addPhotoByNumber(int number, String photo){
 
         switch (number){
@@ -150,6 +189,10 @@ public class PostponedAppeal {
 
     }
 
+    /**
+     * Check is eny photos in this object
+     * @return return true if exist photos
+     */
     public boolean isPhotos(){
         if(photo1 != null || photo2 != null || photo3 != null || photo4 != null || photo5 != null){
            if(photo1 != "" || photo2 != "" || photo3 != "" || photo4 != "" || photo5 != ""){

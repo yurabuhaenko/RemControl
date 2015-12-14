@@ -13,7 +13,9 @@ import container.PostponedAppeal;
 import container.User;
 
 /**
- * Created by Denver on 05.09.2015.
+ * Class which holds and save information of user and postponed appeals
+ * It can be accessed from each activity by "(RemControlApplication)getApplicationContext();"
+ * @author yurabuhaenko
  */
 
 public class RemControlApplication extends Application {
@@ -28,6 +30,11 @@ public class RemControlApplication extends Application {
     private ArrayList<PostponedAppeal> postponedAppeals;
 
 
+    /**
+     * default on create method
+     * loading user from shared preferences
+     * loading saved postponed appeals
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,15 +49,23 @@ public class RemControlApplication extends Application {
         loadSavedAppeals();
     }
 
+    /**
+     * @param appealSents which must be setted
+     */
     public void setAppealSents(ArrayList<Appeal> appealSents){
         this.appealSents = appealSents;
     }
+
     public ArrayList<Appeal> getAppealSents(){return appealSents;}
 
     public void setUser(User user) {
         this.user = user;
     }
     public User getUser(){return user;}
+
+    /**
+     * set user object null
+     */
     public void deleteUser(){user = null;}
 
 
@@ -74,7 +89,9 @@ public class RemControlApplication extends Application {
     private static final String SAVED_USER_NAME = "userName";
     private static final String SAVED_USER_SURNAME = "userSurname";
 
-
+    /**
+     * save all fields from object user to shared preferences
+     */
     public void saveUser() {
         sPref = getSharedPreferences(PREFERENCES_USER, MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
@@ -85,6 +102,10 @@ public class RemControlApplication extends Application {
         ed.commit();
     }
 
+    /**
+     * Method loads all user fields from saved shared preferences
+     * @return User object loaded from shared preferences
+     */
     public User loadUser() {
         sPref = getSharedPreferences(PREFERENCES_USER, MODE_PRIVATE);
         String email = sPref.getString(SAVED_USER_EMAIL, "");
@@ -95,6 +116,10 @@ public class RemControlApplication extends Application {
         return user;
     }
 
+    /**
+     * Check if was saved user in shared preferences
+     * @return true is user was saved in shared preferences
+     */
     public boolean checkIsSavedUser() {
         sPref = getSharedPreferences(PREFERENCES_USER, MODE_PRIVATE);
         String chk = sPref.getString(SAVED_USER_EMAIL, "");
@@ -105,13 +130,13 @@ public class RemControlApplication extends Application {
         }
     }
 
+    /**
+     * Method celears all user information saved in shared preferences
+     */
     public void deleteUserFromSaved(){
         sPref = getSharedPreferences(PREFERENCES_USER, MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_USER_EMAIL, "");
-        ed.putString(SAVED_USER_PASSWORD, "");
-        ed.putString(SAVED_USER_NAME, "");
-        ed.putString(SAVED_USER_SURNAME, "");
+        ed.clear();
         ed.commit();
     }
 
@@ -135,8 +160,9 @@ public class RemControlApplication extends Application {
     private static final String SAVED_PHOTO5 = "PHOTO5";
 
 
-
-
+    /**
+     * Loading all saved appeals from shared preferences and save it on postponedAppeals
+     */
     private void loadSavedAppeals(){
         sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
 
@@ -158,7 +184,9 @@ public class RemControlApplication extends Application {
         }
     }
 
-
+    /**
+     * Save all postponed appeals to shared preferences from postponedAppeals
+     */
     public void savePostponedAppeals(){
         sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
@@ -184,6 +212,9 @@ public class RemControlApplication extends Application {
 
     }
 
+    /**
+     * Clears all postponed appeals from shared preferences
+     */
     public void deleteAllPostponedAppeals(){
         sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
@@ -193,76 +224,5 @@ public class RemControlApplication extends Application {
 
 
 
-
-
-/*
-    public void deleteAllSavedAppeals(){
-        sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
-        int numbOfSaved = sPref.getInt(NUMBER_OF_SAVED_APPEALS, 0);
-        SharedPreferences.Editor ed = sPref.edit();
-        for (int i = 0; i < numbOfSaved;++i){
-            ed.putString(SAVED_TEXT + Integer.toString(i), "");
-            ed.putString(SAVED_LONGITUDE + Integer.toString(i), "");
-            ed.putString(SAVED_LATITUDE + Integer.toString(i), "");
-            ed.putString(SAVED_DATETIME + Integer.toString(i), "");
-            ed.putString(SAVED_PHOTO1 + Integer.toString(i), "");
-            ed.putString(SAVED_PHOTO2 + Integer.toString(i), "");
-            ed.putString(SAVED_PHOTO3 + Integer.toString(i), "");
-            ed.putString(SAVED_PHOTO4 + Integer.toString(i), "");
-            ed.putString(SAVED_PHOTO5 + Integer.toString(i), "");
-        }
-        ed.putInt(NUMBER_OF_SAVED_APPEALS, 0);
-        ed.commit();
-    }
-
-
-    public void deleteAppealByNumber(int number){
-        sPref = getSharedPreferences(PREFERENCES_POSTPONDED_APPEALS, MODE_PRIVATE);
-        int numbOfSaved = sPref.getInt(NUMBER_OF_SAVED_APPEALS, 0);
-
-        if (numbOfSaved > 1 && number < numbOfSaved) {
-            SharedPreferences.Editor ed = sPref.edit();
-            for (int i = number; i < numbOfSaved-1; ++i){
-                String text = sPref.getString(SAVED_TEXT + Integer.toString(i+1), "");
-                String lon = sPref.getString(SAVED_LONGITUDE + Integer.toString(i+1), "");
-                String lang = sPref.getString(SAVED_LATITUDE + Integer.toString(i + 1), "");
-                String datetime = sPref.getString(SAVED_DATETIME + Integer.toString(i + 1), "");
-                String photo1 = sPref.getString(SAVED_PHOTO1 + Integer.toString(i + 1), "");
-                String photo2 = sPref.getString(SAVED_PHOTO2 + Integer.toString(i + 1), "");
-                String photo3 = sPref.getString(SAVED_PHOTO3 + Integer.toString(i + 1), "");
-                String photo4 = sPref.getString(SAVED_PHOTO4 + Integer.toString(i + 1), "");
-                String photo5 = sPref.getString(SAVED_PHOTO5 + Integer.toString(i + 1), "");
-
-                ed.putString(SAVED_TEXT + Integer.toString(i), text);
-                ed.putString(SAVED_LONGITUDE + Integer.toString(i), lon);
-                ed.putString(SAVED_LATITUDE + Integer.toString(i), lang);
-                ed.putString(SAVED_DATETIME + Integer.toString(i), datetime);
-                ed.putString(SAVED_PHOTO1 + Integer.toString(i), photo1);
-                ed.putString(SAVED_PHOTO2 + Integer.toString(i), photo2);
-                ed.putString(SAVED_PHOTO3 + Integer.toString(i), photo3);
-                ed.putString(SAVED_PHOTO4 + Integer.toString(i), photo4);
-                ed.putString(SAVED_PHOTO5 + Integer.toString(i), photo5);
-            }
-            ed.putInt(NUMBER_OF_SAVED_APPEALS, numbOfSaved-1);
-            ed.commit();
-        }
-        if(numbOfSaved == 1){
-            SharedPreferences.Editor ed = sPref.edit();
-            ed.putString(SAVED_TEXT + Integer.toString(0), "");
-            ed.putString(SAVED_LONGITUDE + Integer.toString(0), "");
-            ed.putString(SAVED_LATITUDE + Integer.toString(0), "");
-            ed.putString(SAVED_DATETIME + Integer.toString(0), "");
-            ed.putString(SAVED_PHOTO1 + Integer.toString(0), "");
-            ed.putString(SAVED_PHOTO2 + Integer.toString(0), "");
-            ed.putString(SAVED_PHOTO3 + Integer.toString(0), "");
-            ed.putString(SAVED_PHOTO4 + Integer.toString(0), "");
-            ed.putString(SAVED_PHOTO5 + Integer.toString(0), "");
-            ed.putInt(NUMBER_OF_SAVED_APPEALS, 0);
-            ed.commit();
-        }
-    }
-
-
-*/
 
 }

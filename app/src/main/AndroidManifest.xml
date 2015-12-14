@@ -55,6 +55,11 @@
             android:name="services.AuthorizationIntentService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".activitys.AboutProject"
+            android:label="@string/title_activity_about_project" >
+        </activity>
     </application>
 
 </manifest>

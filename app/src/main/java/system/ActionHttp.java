@@ -1,7 +1,11 @@
 package system;
 
 /**
- * Created by Denver on 06.09.2015.
+ * @author SergPohh
+ * class to perform requests by
+ * @see system.ServiceServerHandler
+ * and get results from
+ * @see system.ParserXML
  */
 import android.content.Context;
 
@@ -15,6 +19,16 @@ import container.ContainerSignInResponse;
 public class ActionHttp {
     public ActionHttp(){}
 
+
+    /**
+     * making authorization request
+     *
+     * @param email user email to sign in request
+     * @param password user password
+     * @param cont activity which perform request context
+     * @return parsed server response in
+     * @see ContainerSignInResponse
+     */
     public static ContainerSignInResponse authorizationRequest(String email, String password, Context cont){
 
 
@@ -33,6 +47,13 @@ public class ActionHttp {
         return ParserXML.getEntityFromAutorizationRequest(response);
     }
 
+    /**
+     * get house id request
+     * @param lang langitude
+     * @param lat latitude
+     * @param cont activity which perform request context
+     * @return house id
+     */
     public static int getNearestAddressesByCoordinates(String lang, String lat, Context cont){
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("Request", "NearestAddresses"));
@@ -47,7 +68,15 @@ public class ActionHttp {
         return ParserXML.getHouseIdFromGetNearestAddressesByCoordinatesRequest(response);
     }
 
-
+    /**
+     * New appeal sent request
+     * @param houseId house id
+     * @param lat latitude
+     * @param lang langitude
+     * @param appealText text of appeal
+     * @param cont activity which perform request context
+     * @return if sending was success
+     */
     public static boolean newAppealSent(int houseId, String lat, String lang, String appealText,Context cont){
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("Request", "NewAppeal"));
@@ -65,9 +94,13 @@ public class ActionHttp {
         pairs.add(new BasicNameValuePair("AppealPublic", "1"));
 
         ServiceServerHandler service = new ServiceServerHandler();
-        String response = service.makeServiceCall(pairs,cont);
+        //String response = service.makeServiceCall(pairs,cont);
+        if (ParserXML.getAppeapIdFromNewAppealRequest("qqq") != -1) {  ///////chande arg to response!!!!!!!!!!!
+            return true;
+        }else{
+            return false;
+        }
 
-        return true;
     }
 
 

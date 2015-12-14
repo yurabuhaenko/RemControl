@@ -22,6 +22,14 @@ import java.util.ListIterator;
 import container.Appeal;
 import denver.remcontrol.R;
 
+
+/**
+ * @author yurabuhaenko
+ * Activity to show list of user appeals from server
+ * extends
+ * @see NavigationDrawerActivity
+ */
+
 public class AppealSentHistoryActivity extends NavigationDrawerActivity {
 
 
@@ -29,6 +37,12 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
     AppealListAdapter appealListAdapter;
     ArrayList<Appeal> appealSents = new ArrayList<>();
 
+
+    /**
+     * default on create method
+     * initialize view components, execute method to set listView
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +75,10 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * create new adapter
+     * set adapter to list view
+     */
     private void setAppealListOnView(){
 
         if(appealSents.size() > 0){
@@ -72,20 +90,24 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * Adapter class. Create list of item layouts to display it on view
+     */
     private class AppealListAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
         List<Appeal> appealSents;
 
+        /**
+         *
+         * @param appealSents list of appeals to display
+         */
         public AppealListAdapter(List<Appeal> appealSents) {
             mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             this.appealSents = appealSents;
             //notifyDataSetChanged();
         }
 
-        public List<Appeal> getUserTasks() {
-            return appealSents;
-        }
 
         public int getCount() {
             return appealSents.size();
@@ -99,6 +121,14 @@ public class AppealSentHistoryActivity extends NavigationDrawerActivity {
             return position;
         }
 
+        /**
+         * auto executed method
+         * All data sets on item layout
+         * @param position number of appeal for which it was executed
+         * @param convertView current item layout
+         * @param parent parent view
+         * @return item layout for display one appeal
+         */
         public View getView(final int position, View convertView, ViewGroup parent) {
             final TextView textViewDistrict;
             final TextView textViewAddress;

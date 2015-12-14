@@ -26,8 +26,16 @@ import denver.remcontrol.R;
 import system.RemControlApplication;
 
 
+/**
+ * @author yurabuhaenko
+ * Activity which must be extended by other activity. Add navigation bar to child activity
+ */
 public class NavigationDrawerActivity extends AppCompatActivity {
 
+    /**
+     * default on create method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +55,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     TextView textViewUserName;
     TextView textViewUserEmail;
 
-
+    /**
+     * Metod which must be executed on child activity
+     * @param savedInstanceState
+     * @param ID id of full child activity layout
+     * initialize action bar view elements
+     */
     public void postCreate(Bundle savedInstanceState, int ID) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
@@ -89,6 +102,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * default on resume method
+     * execute methods to show action bar for user specific
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -98,7 +116,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * sets user name and mail on action bar header or massage of need authorization
+     */
     public void setHeaderUser(){
 
         if (remControlApplication.checkIsSavedUser()){
@@ -112,8 +132,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * set items on action bar according to user (authorized or guest)
+     */
     public void setMenuForUser(){
         if(remControlApplication.checkIsSavedUser()){
             navigationView.getMenu().setGroupVisible(R.id.group_base_functional_menu, true);
@@ -131,7 +152,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * default activity method to create buttons on toolbar
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -139,6 +164,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * set home button on toolbar to open navigation bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -150,17 +180,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
 
-
-    public void setMenuItemChecked(int id){
-        for(int i = 0; i < navigationView.getMenu().size(); ++i) {
-            if(navigationView.getMenu().getItem(i).getItemId()==id){
-                navigationView.getMenu().getItem(i).setChecked(true);
-            }else{
-                navigationView.getMenu().getItem(i).setChecked(false);
-            }
-        }
-    }
-
+    /**
+     * method to perform user log out. Execute alert dialog, if positive:
+     * dell user from
+     * @see RemControlApplication
+     * Shared Preferences
+     * Set new menu for user
+     */
 
     public void onClickSignOut(){
         AlertDialog.Builder ad;
@@ -187,6 +213,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         ad.show();
     }
 
+
+    /**
+     * initialize on click for navigation bar items listeners
+     * perform actions for each menu item
+     * @param navigationView
+     */
 
     private void setupNavigationDrawerContent(final NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(

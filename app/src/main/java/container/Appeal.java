@@ -9,7 +9,11 @@ import denver.remcontrol.R;
 import system.DistrictsHolder;
 
 /**
- * Created by Denver on 06.09.2015.
+ * @author yurabuhaenko
+ *
+ * Class-container Appeal used for holding appeals from server
+ *
+ *
  */
 public class Appeal {
 
@@ -25,6 +29,17 @@ public class Appeal {
 
     //private Context context;
 
+
+    /**
+     * Constructor without photos & comments
+     * @param id
+     * @param districtId
+     * @param street
+     * @param house
+     * @param appealText
+     * @param status
+     * @param statusCode
+     */
     public Appeal(int id, int districtId, String street, String house, String appealText, String status, int statusCode){
         this.appealId = id;
        // this.context = context;
@@ -38,6 +53,19 @@ public class Appeal {
         comments = new ArrayList<>();
     }
 
+
+    /**
+     * Constructor with photos & comments
+     * @param id
+     * @param districtId
+     * @param street
+     * @param house
+     * @param appealText
+     * @param status
+     * @param statusCode
+     * @param photosUrl
+     * @param comments
+     */
     public Appeal( int id, int districtId, String street, String house, String appealText, String status, int statusCode,
                   ArrayList<String> photosUrl, ArrayList<Comment> comments){
 
@@ -54,21 +82,71 @@ public class Appeal {
     }
 
 
-
+    /**
+     *
+     * @param comments
+     */
     public void setComments(ArrayList<Comment> comments){this.comments = comments;}
+
+    /**
+     *
+     * @param comment
+     */
     public void addComment(Comment comment){comments.add(comment);}
+
+    /**
+     *
+     * @return comments
+     */
     public ArrayList<Comment> getComments(){return comments;}
 
+    /**
+     *
+     * @param photos
+     */
     public void setPhotosUrl(ArrayList<String> photos){this.photosUrl = photos;}
+
+    /**
+     *
+     * @param photoUrl
+     */
     public void addPhotoUrl(String photoUrl){photosUrl.add(photoUrl);}
+
+    /**
+     *
+     * @return photosUrl
+     */
     public ArrayList<String> getPhotosUrl(){return photosUrl;}
 
-
+    /**
+     *
+     * @return appealId
+     */
     public int getAppealId(){return appealId;}
+    /**
+     *
+     * @return district
+     */
     public String getDistrict(){return district;}
+    /**
+     *
+     * @return address
+     */
     public String getAddress(){return address;}
+    /**
+     *
+     * @return appealText
+     */
     public String getAppealText(){return appealText;}
+    /**
+     *
+     * @return status
+     */
     public String getStatus(){return status;}
+    /**
+     *
+     * @return statusCode
+     */
     public int getStatusCode(){return statusCode;}
 
 }

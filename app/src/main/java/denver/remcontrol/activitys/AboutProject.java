@@ -10,13 +10,20 @@ import android.widget.TextView;
 
 import denver.remcontrol.R;
 
+
+/**
+ * @author SergPohh
+ * Activity which display info about project & developers
+ * extends
+ * @see NavigationDrawerActivity
+ */
 public class AboutProject extends NavigationDrawerActivity {
 
 
     /**
-     *
+     * Default on create method where initializing links & email links
      * @param savedInstanceState
-     * @
+     *
      */
 
     @Override
@@ -36,8 +43,6 @@ public class AboutProject extends NavigationDrawerActivity {
         TextView feedback2 = (TextView) findViewById(R.id.textViewEmailPoh);
         feedback2.setText(Html.fromHtml("<a href=\"mailto:Psadeas170894@gmail.com\">Psadeas170894@gmail.com</a>"));
         feedback2.setMovementMethod(LinkMovementMethod.getInstance());
-
-
 
     }
 
