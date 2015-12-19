@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -98,8 +99,10 @@ public class LoginActivity extends NavigationDrawerActivity  {
      * @param view
      */
     public void onClickButtonSignUp(View view) {
-       //Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-       // startActivity(intent);
+        Intent viewIntent =
+                new Intent("android.intent.action.VIEW",
+                        Uri.parse("https://1551.gov.ua/join/"));
+        startActivity(viewIntent);
     }
 
 

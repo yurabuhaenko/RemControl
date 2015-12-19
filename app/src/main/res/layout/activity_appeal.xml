@@ -46,13 +46,18 @@
         android:orientation="horizontal"
         android:gravity="left">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="+"
-            android:onClick="onClickButtonAddPhoto"
 
-            android:id="@+id/buttonAddPhoto" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="+\nфото"
+                android:onClick="onClickButtonAddPhoto"
+
+                android:id="@+id/buttonAddPhotoFromGallery" />
+
+
+
 
         <RelativeLayout
             android:id="@+id/photoLayout1"
@@ -73,7 +78,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/del_phot_fab"
-
+                android:padding="1dp"
+                android:scaleType="center"
                 android:clickable="true"
 
                 app:layout_anchorGravity="top|right"
@@ -110,7 +116,8 @@
                 android:layout_height="27dp"
                 android:src="@drawable/del_phot_fab"
                 android:clickable="true"
-
+                android:padding="1dp"
+                android:scaleType="center"
                 app:layout_anchorGravity="top|right"
                 app:elevation="1dp"
                 app:borderWidth="0dp"
@@ -151,7 +158,8 @@
                 app:elevation="1dp"
                 app:borderWidth="0dp"
                 android:onClick="onClickDeletePhoto"
-
+                android:padding="1dp"
+                android:scaleType="center"
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_alignParentTop="true"
@@ -181,7 +189,8 @@
                 android:layout_height="27dp"
                 android:src="@drawable/del_phot_fab"
                 android:clickable="true"
-
+                android:padding="1dp"
+                android:scaleType="center"
                 app:layout_anchorGravity="top|right"
                 app:elevation="1dp"
                 app:borderWidth="0dp"
@@ -216,7 +225,8 @@
                 android:layout_height="27dp"
                 android:src="@drawable/del_phot_fab"
                 android:clickable="true"
-
+                android:padding="1dp"
+                android:scaleType="center"
                 app:layout_anchorGravity="top|right"
                 app:elevation="1dp"
                 app:borderWidth="0dp"

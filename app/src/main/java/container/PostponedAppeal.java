@@ -205,5 +205,13 @@ public class PostponedAppeal {
         }
     }
 
+    public int getNumberOfFirstFreePhoto(){
+        if (photo1 == null || photo1 == ""){return 1;}
+        if (photo2 == null || photo2 == ""){return 2;}
+        if (photo3 == null || photo3 == ""){return 3;}
+        if (photo4 == null || photo4 == ""){return 4;}
+        if (photo5 == null || photo5 == ""){return 5;}
+        return 0;
+    }
 
 }

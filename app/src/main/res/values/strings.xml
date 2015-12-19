@@ -55,4 +55,11 @@
     <string name="title_activity_postponed_appeals_list">PostponedAppealsListActivity</string>
     <string name="title_activity_about_project">AboutProject</string>
 
+    <string-array
+        name="array_buttons_set_photos">
+        <item>Зробити фото</item>
+        <item>Додати з галереї</item>
+    </string-array>
+
+
 </resources>

@@ -41,7 +41,7 @@ public class AboutProject extends NavigationDrawerActivity {
         feedback.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView feedback2 = (TextView) findViewById(R.id.textViewEmailPoh);
-        feedback2.setText(Html.fromHtml("<a href=\"mailto:Psadeas170894@gmail.com\">Psadeas170894@gmail.com</a>"));
+        feedback2.setText(Html.fromHtml("<a href=\"mailto:Serg.Pohh@gmail.com\">Psadeas170894@gmail.com</a>"));
         feedback2.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
